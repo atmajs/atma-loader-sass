@@ -1,10 +1,10 @@
-[Less Compiler](http://lesscss.org) (Atma Plugin)
+[sass Compiler](http://sasscss.org) (Atma Plugin)
 -----
-[![Build Status](https://travis-ci.org/atmajs/atma-loader-less.png?branch=master)](https://travis-ci.org/atmajs/atma-loader-less)
+[![Build Status](https://travis-ci.org/atmajs/atma-loader-sass.png?branch=master)](https://travis-ci.org/atmajs/atma-loader-sass)
 
 The Plugin extends:
 - [`IncludeJS`](https://github.com/atmajs/IncludeJS) with a custom loader
-- [`atma-io`](https://github.com/atmajs/atma-io) with a custom middleware to read Less files
+- [`atma-io`](https://github.com/atmajs/atma-io) with a custom middleware to read sass files
 - [`atma-server`](https://github.com/atmajs/atma-server) and [`Atma Toolkit`](https://github.com/atmajs/Atma.Toolkit) with a `HTTPHandler` to serve compiled sources (with **sourceMap** support)
 
 
@@ -13,21 +13,23 @@ The Plugin extends:
 
 ###### Embed into the Project
 
-+ `atma plugin install atma-loader-less`
++ `atma plugin install atma-loader-sass`
 	
-	This adds `atma-loader-less` npm dependency and the `package.json` would look like:
+	This adds `atma-loader-sass` npm dependency and the `package.json` would look like:
 	```json
 	{
 		"dependency": {
-			"atma-loader-less"
+			"atma-loader-sass"
 		},
 		"atma": {
 			"plugins": [
-				"atma-loader-less"
+				"atma-loader-sass"
 			],
 			"settings": {
-				"less_loader": {
-					"extension": "less"
+				"atma-loader-sass": {
+                    "sass": {
+
+                    }
 				}
 			}
 		}
@@ -38,18 +40,18 @@ The Plugin extends:
 ##### Quick Try
 
 + install atma: `$ npm install atma -g`
-+ install plugin: `$ atma plugin install atma-loader-less`
++ install plugin: `$ atma plugin install atma-loader-sass`
 + add `test.html` to the directory
 
     ```html
     <!DOCTYPE html>
-    <link href='test.less' rel='stylesheet' />
+    <link href='test.scss' rel='stylesheet' />
     ```
-+ add `test.less`
++ add `test.sass`
     
-    ```css
-    @color: green;
-	body { background: @color; }
+    ```scss
+    $color: green;
+	body { background: $color; }
     ```
 + start the server: `$ atma server`
 + open the browser: `http://localhost:5777/test.html`
