@@ -34,14 +34,17 @@ export function processAsync(source: string, file, compiler: Compiler) {
         includePaths: paths
     };
 
-    sass.render(options, function (error, result) {
-        if (error) {
-            out.content = out.error = error;
-            return;
-        }
-        out.content = result.css;
-        out.sourceMap = result.map;
-    });
-
-    return out;
+    return new Promise((resolve, reject) => {
+        sass.render(options, function (error, result) {
+            if (error) {
+                //-out.content = out.error = error;
+                reject(error);
+                return;
+            }
+            out.content = result.css;
+            out.sourceMap = result.map;
+            resolve(out);
+        });
+    })
+    
 }
