@@ -34,6 +34,16 @@ function processAsync(source, file, compiler) {
         file: uri.toLocalFile(),
         includePaths: paths
     };
+    var sassOpts = compiler.getOption('sass') || {};
+    if (sassOpts.includePaths) {
+        sassOpts.includePaths = sassOpts.includePaths.map(function (path) {
+            if (path.startsWith('file')) {
+                return new atma_utils_1.class_Uri(path).toLocalDir();
+            }
+            return atma_utils_1.class_Uri.combine(base, path);
+        });
+    }
+    extend(options, sassOpts);
     return new Promise(function (resolve, reject) {
         sass.render(options, function (error, result) {
             if (error) {
@@ -48,6 +58,25 @@ function processAsync(source, file, compiler) {
     });
 }
 exports.processAsync = processAsync;
+function extend(options, sass) {
+    var _a;
+    for (var key in sass) {
+        var val = sass[key];
+        if (val == null) {
+            continue;
+        }
+        var opt = options[key];
+        if (opt == null || typeof val !== 'object') {
+            options[key] = sass[key];
+            continue;
+        }
+        if (Array.isArray(options[key])) {
+            (_a = options[key]).push.apply(_a, sass[key]);
+            continue;
+        }
+        extend(opt, val);
+    }
+}
 ;
 
 	function isObject(x) {

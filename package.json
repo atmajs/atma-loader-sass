@@ -1,6 +1,6 @@
 {
     "name": "atma-loader-sass",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Sass compiler for `atma-io`, `IncludeJS` and `atma-server`.",
     "author": "Alexander Kit (alex.kit@atmajs.com)",
     "main": "index.js",
@@ -11,10 +11,11 @@
     },
     "scripts": {
         "build": "app-bundler",
-        "upd-base": "npm i atma-io-middleware-base@1.0.28 && atma bump && npm publish && git commit -am \"update (base-mid)\" && git push"
+        "upd-base": "npm i atma-io-middleware-base@latest && atma bump && npm publish && git commit -am \"update (base-mid)\" && git push",
+        "release": "eacho \"atma pub -m 'message'\""
     },
     "dependencies": {
-        "atma-io-middleware-base": "^1.0.31",
+        "atma-io-middleware-base": "^1.0.41",
         "atma-utils": "^0.1.13",
         "sass": "^1.20.1"
     },

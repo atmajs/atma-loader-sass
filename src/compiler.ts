@@ -21,7 +21,6 @@ export function processAsync(source: string, file, compiler: Compiler) {
 
     paths.push(new class_Uri(base).toLocalDir());
 
-
     const options = {
         sourceMap: {
             sourceMapURL: uri.file + '.map',
@@ -33,6 +32,16 @@ export function processAsync(source: string, file, compiler: Compiler) {
         file: uri.toLocalFile(),
         includePaths: paths
     };
+    let sassOpts = compiler.getOption('sass') || {};
+    if (sassOpts.includePaths) {
+        sassOpts.includePaths = sassOpts.includePaths.map(path => {
+            if (path.startsWith('file')) {
+                return new class_Uri(path).toLocalDir();
+            }
+            return class_Uri.combine(base, path);
+        });
+    }
+    extend(options, sassOpts);
 
     return new Promise((resolve, reject) => {
         sass.render(options, function (error, result) {
@@ -47,4 +56,23 @@ export function processAsync(source: string, file, compiler: Compiler) {
         });
     })
     
+}
+
+function extend (options, sass) {
+    for (let key in sass) {
+        let val = sass[key];
+        if (val == null) {
+            continue;
+        }
+        let opt = options[key];
+        if (opt == null || typeof val !== 'object') {
+            options[key] = sass[key];
+            continue;
+        }
+        if (Array.isArray(options[key])) {
+            options[key].push(...sass[key]);
+            continue;
+        }
+        extend(opt, val);
+    }
 }
