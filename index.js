@@ -11,8 +11,8 @@ var _src_compiler;
 	var module = { exports: exports };
 	"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var sass = require("sass");
 var atma_utils_1 = require("atma-utils");
+var sass = null;
 function processAsync(source, file, compiler) {
     var uri = file.uri, paths = [uri.toLocalDir()], out = {
         error: null,
@@ -45,6 +45,9 @@ function processAsync(source, file, compiler) {
     }
     extend(options, sassOpts);
     return new Promise(function (resolve, reject) {
+        if (sass == null) {
+            sass = require('sass');
+        }
         sass.render(options, function (error, result) {
             if (error) {
                 //-out.content = out.error = error;

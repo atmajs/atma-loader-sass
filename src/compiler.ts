@@ -1,7 +1,7 @@
 import { Compiler } from 'atma-io-middleware-base'
-import * as sass from 'sass'
 import { class_Uri } from 'atma-utils'
 
+let sass = null;
 
 
 export function processAsync(source: string, file, compiler: Compiler) {
@@ -32,7 +32,7 @@ export function processAsync(source: string, file, compiler: Compiler) {
         file: uri.toLocalFile(),
         includePaths: paths
     };
-    let sassOpts = compiler.getOption('sass') || {};
+    let sassOpts = compiler.getOption('sass') || <any> {};
     if (sassOpts.includePaths) {
         sassOpts.includePaths = sassOpts.includePaths.map(path => {
             if (path.startsWith('file')) {
@@ -44,6 +44,9 @@ export function processAsync(source: string, file, compiler: Compiler) {
     extend(options, sassOpts);
 
     return new Promise((resolve, reject) => {
+        if (sass == null) {
+            sass = require('sass');
+        }
         sass.render(options, function (error, result) {
             if (error) {
                 //-out.content = out.error = error;
